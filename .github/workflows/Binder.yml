@@ -1,0 +1,20 @@
+name: Build Notebook Container
+on: [push] # You may want to trigger this Action on other things than a push.
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: checkout code 
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+
+    - name: update jupyter dependencies with repo2docker
+      uses: machine-learning-apps/repo2docker-action@0.2
+      with:
+        IMAGE_NAME: "ramezani89/repo2docker-test"
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        BINDER_CACHE: true
+        PUBLIC_REGISTRY_CHECK: true
